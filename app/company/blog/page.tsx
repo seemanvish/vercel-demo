@@ -1,5 +1,7 @@
-import { client } from '../lib/contentful'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import { client } from '../../lib/contentful'
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'  
+
+export const revalidate = 60;
 
 export default async function BlogPage() {
   const res = await client.getEntries({
