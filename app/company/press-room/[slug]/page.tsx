@@ -1,6 +1,7 @@
 import { client } from '../../../lib/contentful'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 
 export const revalidate = 10
 
@@ -9,11 +10,36 @@ async function getEntry(slug: string) {
     content_type: 'pressRelease',
     'fields.slug': slug,
     locale: 'en-US',
+    include: 1,
     limit: 1,
   })
   const entry = res.items[0]
   if (!entry || !(entry.fields as any).body) return null
   return entry
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const entry = await getEntry(slug)
+  if (!entry) return {}
+
+  const fields = entry.fields as any
+  const seo = fields.seo?.fields
+  const robotsValue: string = seo?.robots || 'index, follow'
+  const [indexPart, followPart] = robotsValue.split(',').map((s: string) => s.trim())
+
+  return {
+    title: seo?.metaTitle || fields.title,
+    description: seo?.metaDescription || '',
+    robots: {
+      index: indexPart === 'index',
+      follow: followPart === 'follow',
+    },
+  }
 }
 
 export default async function PressReleaseDetail({

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import PageBanner from './PageBanner'
 
 type PressRelease = {
   id: string
@@ -52,20 +53,7 @@ export default function PressReleaseListing({
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      <p className="text-orange-500 font-semibold text-sm mb-2">
-        {eyebrow || 'Automation Anywhere Press room'}
-      </p>
-      <h1 className="text-4xl font-bold text-gray-900 mb-6 max-w-2xl">
-        {heading || 'All the Automation Anywhere news, all in one place.'}
-      </h1>
-
-      {bannerUrl && (
-        <img
-          src={bannerUrl}
-          alt=""
-          className="w-full h-64 object-cover rounded-lg mb-10"
-        />
-      )}
+      <PageBanner eyebrow={eyebrow} heading={heading} bannerUrl={bannerUrl} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
         {latest.map((item) => (

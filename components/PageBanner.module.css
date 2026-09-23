@@ -1,0 +1,16 @@
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 2rem;
+}
+
+.diagonalShape {
+  position: absolute;
+  top: -40px;
+  right: -60px;
+  width: 320px;
+  height: 260px;
+  background-color: #dce7f5;
+  clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
+  z-index: 0;
+}
