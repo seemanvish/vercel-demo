@@ -1,11 +1,10 @@
 import BlogCard from '../../../components/BlogListing';
 import { client } from '../../lib/contentful'
-import type { Metadata } from 'next'
-import { buildHreflang } from '../../lib/seo'
+
 import "./blog.css";
 import "./blog.js";
 
-export const revalidate = 10
+
 
 async function getBlogs() {
   const response = await contentfulClient.getEntries({
