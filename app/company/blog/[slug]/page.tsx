@@ -1,7 +1,7 @@
 
 
 import { client } from '../../../lib/contentful'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -30,20 +30,43 @@ export default async function BlogDetailPage({
   }
 
   return (
-    <main className="blog-detail">
+    <main>
+      <h1>Blog</h1>
 
-      <header className="blog-detail-header">
-        <h1>{blog.fields.title as string}</h1>
-      </header>
+      {blogs.map((blog: any) => {
+        const htmlContent = blog.fields.descrption;
 
-      <article className="blog-content">
-        {blog.fields.content && (
-          <pre>
-            {JSON.stringify(blog.fields.content, null, 2)}
-          </pre>
-        )}
-      </article>
+        // Extract HTML from Contentful Rich Text text nodes
+        const html = htmlContent?.content
+          ?.map((block: any) =>
+            block.content
+              ?.map((item: any) => item.value || '')
+              .join('')
+          )
+          .join('');
 
+        const cleanHtml = DOMPurify.sanitize(html || '');
+
+        return (
+          <article key={blog.sys.id}>
+            {blog.fields.bannerImage && (
+                <img
+                    src={`https:${blog.fields.bannerImage.fields.file.url}`}
+                    alt={blog.fields.bannerImage.fields.title || blog.title}
+                    className="blog-featured-image"
+                />
+                )}
+            <h2>{blog.fields.title}</h2>
+
+            <div
+              className="blog-description"
+              dangerouslySetInnerHTML={{
+                __html: cleanHtml,
+              }}
+            />
+          </article>
+        );
+      })}
     </main>
   );
 }
