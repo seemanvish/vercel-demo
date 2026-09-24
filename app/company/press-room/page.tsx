@@ -1,5 +1,11 @@
 import { client } from '../../lib/contentful'
 import PressReleaseListing from '../../../components/PressReleaseListing'
+import type { Metadata } from 'next'
+import { buildHreflang } from '../../lib/seo'
+
+export const metadata: Metadata = {
+  alternates: { languages: buildHreflang({ en: '/company/press-room' }) },
+}
 
 export const revalidate = 10
 
