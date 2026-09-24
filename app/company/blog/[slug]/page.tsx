@@ -1,8 +1,11 @@
 
-import { notFound } from "next/navigation";
-import { contentfulClient } from "@/lib/contentful";
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 
+import { contentfulClient } from '../../../lib/contentful'
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
+export const revalidate = 10
 interface BlogDetailPageProps {
   params: Promise<{
     slug: string;
