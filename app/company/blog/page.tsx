@@ -1,5 +1,7 @@
 import BlogCard from '../../../components/BlogListing';
 import { client } from '../../lib/contentful'
+import type { Metadata } from 'next'
+import { buildHreflang } from '../../lib/seo'
 import "./blog.css";
 import "./blog.js";
 
