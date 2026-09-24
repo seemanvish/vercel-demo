@@ -1,10 +1,9 @@
-import BlogCard from '../../../components/BlogListing';
+import BlogCard from '../../../components/BlogListing'
 import { contentfulClient } from '../../lib/contentful'
-
+import type { Metadata } from 'next'
+import { buildHreflang } from '../../lib/seo'
 import "./blog.css";
 import "./blog.js";
-
-
 
 async function getBlogs() {
   const response = await contentfulClient.getEntries({
@@ -14,7 +13,7 @@ async function getBlogs() {
 
     include: 2,
 
-    limit: 100,
+    limit: 12,
   });
 
   return response.items;
