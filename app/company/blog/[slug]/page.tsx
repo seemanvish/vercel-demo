@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import DOMPurify from 'isomorphic-dompurify';
 
+import "../blog.css";
+
 export const revalidate = 10
 
 interface BlogDetailPageProps {
@@ -43,12 +45,36 @@ const htmlContent = fields.description;
 
         const cleanHtml = DOMPurify.sanitize(html || '');
   return (
-    <main>
-      <h1>Blog</h1>
+   <main className="page">
+      {/* Hero */}
+      <section className="hero">
+        <div className="gold-lines" />
 
-      <article>
-        {fields.bannerImage && (
-          <img
+        <div className="hero-content">
+          <div className="breadcrumbs">
+            <span>Home</span>
+            <span>›</span>
+            <span>Blog</span>
+            <span>›</span>
+            <span>{fields.title}</span>
+          </div>
+
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <h1>
+                {fields.title}
+              </h1>
+
+              <p className="hero-description">
+                {fields.introContent}
+              </p>
+
+              
+            </div>
+
+            <div className="hero-image-wrapper">
+              {fields.bannerImage && (
+                <img
             src={`https:${fields.bannerImage.fields.file.url}`}
             alt={
               fields.bannerImage.fields.title ||
@@ -59,15 +85,24 @@ const htmlContent = fields.description;
           />
         )}
 
-        <h2>{fields.title}</h2>
+              
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <div
+      {/* Article */}
+      <section className="article-section">
+
+        <article className="blog-description">
+          <div
               className="blog-description"
               dangerouslySetInnerHTML={{
                 __html: cleanHtml,
               }}
             />
-      </article>
+        </article>
+      </section>
     </main>
   )
 }
