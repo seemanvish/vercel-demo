@@ -1,6 +1,6 @@
 
 
-import { contentfulClient } from '../../../lib/contentful'
+import { client } from '../../../lib/contentful'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -17,7 +17,7 @@ export default async function BlogDetailPage({
 }: BlogDetailPageProps) {
   const { slug } = await params;
 
-  const response = await contentfulClient.getEntries({
+  const response = await client.getEntries({
     content_type: "blog",
     "fields.slug": slug,
     limit: 1,

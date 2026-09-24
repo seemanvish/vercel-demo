@@ -1,12 +1,12 @@
 import BlogCard from '../../../components/BlogListing'
-import { contentfulClient } from '../../lib/contentful'
+import { client } from '../../lib/contentful'
 import type { Metadata } from 'next'
 import { buildHreflang } from '../../lib/seo'
 import "./blog.css";
 import "./blog.js";
 
 async function getBlogs() {
-  const response = await contentfulClient.getEntries({
+  const response = await client.getEntries({
     content_type: "blog",
 
     order: ["-fields.publishedDate"],
