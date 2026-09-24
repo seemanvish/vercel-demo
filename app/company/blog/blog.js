@@ -1,5 +1,5 @@
 
-import { client } from '../../../lib/contentful'
+import { client } from '../../lib/contentful'
 
 export default async function BlogPage() {
   const response = await client.getEntries({
