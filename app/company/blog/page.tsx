@@ -1,5 +1,5 @@
 import BlogCard from '../../../components/BlogListing';
-import { client } from '../../lib/contentful'
+import { contentfulClient } from '../../lib/contentful'
 
 import "./blog.css";
 import "./blog.js";
