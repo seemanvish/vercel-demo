@@ -71,6 +71,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               )}
             </Link>
             <div className="flex gap-6 text-sm font-semibold text-gray-700">
+              <Link href="#">Solutions</Link>
+              <Link href="#">Products</Link>
               <Link href="/company/press-room">Press Room</Link>
               <Link href="/company/blog">Blog</Link>
             </div>
