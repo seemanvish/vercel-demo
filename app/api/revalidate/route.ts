@@ -7,6 +7,7 @@ import { revalidatePath } from 'next/cache'
 const CONTENT_TYPE_PATHS: Record<string, string[]> = {
   pressRelease: ['/company/press-room', '/company/press-room/[slug]'],
   pageHeader: ['/company/press-room'],
+  homepage: ['/'],
 }
 
 export async function POST(request: NextRequest) {
