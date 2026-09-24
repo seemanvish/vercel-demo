@@ -5,6 +5,8 @@ import { buildHreflang } from '../../lib/seo'
 import "./blog.css";
 import "./blog.js";
 
+export const revalidate = 10
+
 async function getBlogs() {
   const response = await contentfulClient.getEntries({
     content_type: "blog",
