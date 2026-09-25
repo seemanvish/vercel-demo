@@ -290,16 +290,6 @@ export default async function BlogDetailPage({
 
             <span>Blog</span>
 
-            {fields.category && (
-              <>
-                <span>›</span>
-
-                <span>
-                  {fields.category.fields.name}
-                </span>
-              </>
-            )}
-
             <span>›</span>
 
             <span>{fields.title}</span>
