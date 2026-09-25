@@ -2,6 +2,7 @@ import { client } from '../../../lib/contentful'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { buildHreflang } from '../../../lib/seo'   // ← ADD THIS IMPORT
 
 export const revalidate = 10
 
@@ -38,6 +39,11 @@ export async function generateMetadata({
     robots: {
       index: indexPart === 'index',
       follow: followPart === 'follow',
+    },
+    alternates: {                                     // ← ADD THIS BLOCK
+      languages: buildHreflang({
+        en: `/company/press-room/${slug}`,
+      }),
     },
   }
 }
