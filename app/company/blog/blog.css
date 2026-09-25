@@ -202,15 +202,11 @@
   position: relative;
 
   width: calc(100% - 120px);
-  max-width: 1100px;
+  max-width: 1320px;
   min-height: 225px;
-
   margin: 18px auto 0;
-
   overflow: hidden;
-
   border-radius: 15px;
-
   background:
     radial-gradient(
       circle at 80% 50%,
@@ -229,9 +225,7 @@
 
 .hero-content {
   position: relative;
-
   z-index: 2;
-
   padding: 16px 19px 17px;
 }
 
@@ -242,21 +236,13 @@
 
 .breadcrumbs {
   display: flex;
-
   align-items: center;
-
   flex-wrap: wrap;
-
   gap: 6px;
-
   margin-bottom: 18px;
-
   color: #ffffff;
-
   font-size: 10px;
-
   font-weight: 500;
-
   line-height: 1.3;
 }
 
@@ -497,14 +483,14 @@
    * Sidebar + article content
    */
   grid-template-columns:
-    155px
+    300px
     minmax(0, 1fr);
 
-  gap: 28px;
+  gap: 45px;
 
   width: 100%;
 
-  max-width: 775px;
+  max-width: 1245;
 
   margin: 30px auto 0;
 
@@ -520,7 +506,7 @@
 
 .article-sidebar {
   position: relative;
-
+  
   min-width: 0;
 }
 
@@ -555,16 +541,29 @@
 .sidebar-inner h2,
 .sidebar h3 {
   margin: 0 0 13px;
-
   color: #171717;
-
-  font-size: 11px;
-
+  font-size: 20px;
   line-height: 1.3;
-
   font-weight: 500;
 }
-
+.highlighted-field-content{
+  padding: 16px;
+  border:1px solid rgba(205, 204, 204, 1);
+  border-radius: 8px;
+}
+.highlighted-field-content ul{
+  clear: both;
+  padding:0;
+  margin:0;
+  list-style-type: none;
+}
+.highlighted-field-content ul li{
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+.highlighted-field-content ul li.activesection{
+  font-weight: 600;
+}
 
 /* =========================================================
    TABLE OF CONTENTS
@@ -651,8 +650,71 @@
 
 .blog-description {
   min-width: 0;
+  color: #333
 }
-
+.blog-description .rich-text h2{
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+.blog-description .rich-text h3{
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+.blog-description .rich-text p{
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+.blog-description .rich-text ul{
+  padding-left: 20px;
+  list-style-type: disc;
+  margin: 0 0 20px;
+  position: relative;
+  clear: both;
+}
+.blog-description .rich-text ul li{
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+.blog-description .rich-text ul li p{
+  margin-bottom: 0;
+}
+.blog-description .rich-text a{
+  color: #ff5a10;
+  text-decoration: none;
+  font-weight: 700;
+}
+.blog-description .rich-text a:hover{
+  text-decoration: underline;
+}
+.blog-description .rich-text table{
+  border-collapse: collapse;
+  border: 1px solid #e5e7eb;
+  font-size: 15px;
+  line-height: 1.5;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.blog-description .rich-text table tr:nth-child(odd){
+  background-color: #f5f5f4;
+}
+.blog-description .rich-text table tr th{
+  border: 1px solid #e5e7eb;
+  color: #1f2937;
+  padding: 14px 16px;
+  text-align: left;
+}
+.blog-description .rich-text table tr td{
+  border: 1px solid #e5e7eb;
+  padding: 14px 16px;
+}
 
 /*
  * The JSX uses:
@@ -822,8 +884,8 @@
 .author-avatar {
   flex: 0 0 auto;
 
-  width: 58px;
-  height: 58px;
+  width: 100px;
+  height: 100px;
 
   border-radius: 50%;
 
@@ -839,9 +901,9 @@
 .author-label {
   margin-bottom: 3px;
 
-  color: #a87708;
+  color: #ff5a10;
 
-  font-size: 8px;
+  font-size: 10px;
 
   font-weight: 600;
 
@@ -855,7 +917,7 @@
 
   color: #171717;
 
-  font-size: 13px;
+  font-size: 18px;
 
   line-height: 1.3;
 
@@ -867,7 +929,7 @@
 
   color: #777777;
 
-  font-size: 9px;
+  font-size: 15px;
 }
 
 .author-bio {
@@ -875,7 +937,7 @@
 
   color: #555555;
 
-  font-size: 9px;
+  font-size: 15px;
 
   line-height: 1.5;
 }
