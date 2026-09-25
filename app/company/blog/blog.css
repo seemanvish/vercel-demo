@@ -253,7 +253,7 @@
 
   color: #ffffff;
 
-  font-size: 6.5px;
+  font-size: 10px;
 
   font-weight: 500;
 
@@ -315,7 +315,7 @@
 
   color: #ffffff;
 
-  font-size: 9px;
+  font-size: 14px;
 
   line-height: 1.45;
 
@@ -348,7 +348,7 @@
 
   color: #ffffff;
 
-  font-size: 7px;
+  font-size: 12px;
 
   white-space: nowrap;
 }
@@ -670,7 +670,7 @@
 .article-content {
   color: #151515;
 
-  font-size: 9px;
+  font-size: 16px;
 
   line-height: 1.55;
 }
