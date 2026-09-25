@@ -1,10 +1,10 @@
+
 import { client } from '../../../lib/contentful'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import DOMPurify from 'isomorphic-dompurify';
+import DOMPurify from 'isomorphic-dompurify'
 
-import "../blog.css";
+import '../blog.css'
 
 export const revalidate = 10
 
@@ -14,9 +14,10 @@ interface BlogDetailPageProps {
   }>
 }
 
-export default async function BlogDetailPage({
+// Optional: generate SEO metadata
+export async function generateMetadata({
   params,
-}: BlogDetailPageProps) {
+}: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params
 
   const response = await client.getEntries({
@@ -24,34 +25,91 @@ export default async function BlogDetailPage({
     'fields.slug': slug,
     limit: 1,
   })
-console.log(response);
+
   const blog = response.items[0]
 
   if (!blog) {
+    return {
+      title: 'Blog Not Found',
+    }
+  }
+
+  const fields = blog.fields as any
+
+  return {
+    title: fields.title || 'Blog',
+    description: fields.introContent || '',
+  }
+}
+
+export default async function BlogDetailPage({
+  params,
+}: BlogDetailPageProps) {
+  // Get slug from URL
+  const { slug } = await params
+
+  console.log('Requested slug:', slug)
+
+  // Fetch blog from Contentful
+  const response = await client.getEntries({
+    content_type: 'blog',
+    'fields.slug': slug,
+    limit: 1,
+  })
+
+  console.log(
+    'Contentful results:',
+    response.items.map((item: any) => ({
+      id: item.sys.id,
+      slug: item.fields.slug,
+      title: item.fields.title,
+    }))
+  )
+
+  // Get first matching blog
+  const blog = response.items[0]
+
+  // Show Next.js 404 if blog doesn't exist
+  if (!blog) {
     notFound()
   }
-console.log(blog);
+
   const fields = blog.fields as any
-  
-const htmlContent = fields.description;
 
-        // Extract HTML from Contentful Rich Text text nodes
-        const html = htmlContent?.content
-          ?.map((block: any) =>
-            block.content
-              ?.map((item: any) => item.value || '')
-              .join('')
-          )
-          .join('');
+  /*
+   * Contentful Rich Text
+   *
+   * The description field may contain Contentful Rich Text.
+   * Convert the text nodes to HTML.
+   */
+  const htmlContent = fields.description
 
-        const cleanHtml = DOMPurify.sanitize(html || '');
+  const html =
+    htmlContent?.content
+      ?.map((block: any) => {
+        return (
+          block.content
+            ?.map((item: any) => {
+              return item.value || ''
+            })
+            .join('') || ''
+        )
+      })
+      .join('') || ''
+
+  // Sanitize generated HTML before rendering
+  const cleanHtml = DOMPurify.sanitize(html)
+
   return (
-   <main className="page">
-      {/* Hero */}
+    <main className="page">
+      {/* =========================
+          HERO SECTION
+      ========================== */}
       <section className="hero">
         <div className="gold-lines" />
 
         <div className="hero-content">
+          {/* Breadcrumbs */}
           <div className="breadcrumbs">
             <span>Home</span>
             <span>›</span>
@@ -60,50 +118,53 @@ const htmlContent = fields.description;
             <span>{fields.title}</span>
           </div>
 
+          {/* Hero Grid */}
           <div className="hero-grid">
+            {/* Hero Content */}
             <div className="hero-copy">
-              <h1>
-                {fields.title}
-              </h1>
+              <h1>{fields.title}</h1>
 
-              <p className="hero-description">
-                {fields.introContent}
-              </p>
-
-              
+              {fields.introContent && (
+                <p className="hero-description">
+                  {fields.introContent}
+                </p>
+              )}
             </div>
 
+            {/* Hero Image */}
             <div className="hero-image-wrapper">
-              {fields.bannerImage && (
+              {fields.bannerImage?.fields?.file?.url && (
                 <img
-            src={`https:${fields.bannerImage.fields.file.url}`}
-            alt={
-              fields.bannerImage.fields.title ||
-              fields.title ||
-              'Blog banner'
-            }
-            className="blog-featured-image"
-          />
-        )}
-
-              
+                  src={`https:${fields.bannerImage.fields.file.url}`}
+                  alt={
+                    fields.bannerImage.fields.title ||
+                    fields.title ||
+                    'Blog banner'
+                  }
+                  className="blog-featured-image"
+                />
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Article */}
+      {/* =========================
+          ARTICLE SECTION
+      ========================== */}
       <section className="article-section">
-
         <article className="blog-description">
-          <div
+          {cleanHtml && (
+            <div
               className="blog-description"
               dangerouslySetInnerHTML={{
                 __html: cleanHtml,
               }}
             />
+          )}
         </article>
       </section>
     </main>
   )
 }
+
