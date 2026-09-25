@@ -481,52 +481,6 @@ export default async function BlogDetailPage({
 
             </div>
           )}
-
-          {/* =================================================
-              AUTHOR
-          ================================================= */}
-
-          {fields.author && (
-            <section className="author-card">
-
-              {authorAvatar && (
-                <img
-                  src={authorAvatar}
-                  alt={
-                    authorName ||
-                    'Author'
-                  }
-                  className="author-avatar"
-                />
-              )}
-
-              <div className="author-content">
-
-                <div className="author-label">
-                  Written by
-                </div>
-
-                <h3>
-                  {authorName}
-                </h3>
-
-               
-
-                {fields.author.fields
-                  ?.shortBiography && (
-                  <p className="author-bio">
-                    {
-                      fields.author.fields
-                        .shortBiography
-                    }
-                  </p>
-                )}
-
-              </div>
-
-            </section>
-          )}
-
           {/* =================================================
               TAGS
           ================================================= */}
@@ -576,6 +530,53 @@ export default async function BlogDetailPage({
 
               </div>
             )}
+
+          {/* =================================================
+              AUTHOR
+          ================================================= */}
+
+          {fields.author && (
+            <section className="author-card">
+
+              {authorAvatar && (
+                <img
+                  src={authorAvatar}
+                  alt={
+                    authorName ||
+                    'Author'
+                  }
+                  className="author-avatar"
+                />
+              )}
+
+              <div className="author-content">
+
+                <div className="author-label">
+                  Written by
+                </div>
+
+                <h3>
+                  {authorName}
+                </h3>
+
+               
+
+                {fields.author.fields
+                  ?.shortBiography && (
+                  <p className="author-bio">
+                    {
+                      fields.author.fields
+                        .shortBiography
+                    }
+                  </p>
+                )}
+
+              </div>
+
+            </section>
+          )}
+
+          
 
           {/* =================================================
               RELATED POSTS
