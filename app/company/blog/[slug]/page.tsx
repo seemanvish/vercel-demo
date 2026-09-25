@@ -569,7 +569,6 @@ export default async function BlogDetailPage({
 
                       <li
                         key={item.id}
-                        className="activesection"
                       >
 
                         <a
