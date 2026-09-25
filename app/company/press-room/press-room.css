@@ -1,5 +1,37 @@
-.pr-boilerplate {
-  background-color: #f9fafb;
-  border-radius: 8px;
-  padding: 24px;
+.pr-detail .prose p{
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+.pr-detail .prose a{
+  color:#ff5a10;
+  font-weight: 500;
+  text-decoration: none;
+}
+.pr-detail .prose a:hover{
+  text-decoration: underline;
+}
+
+.pr-boilerplate{
+  background-color: #f5f5f5;
+  border-radius: 0 20px 0 20px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+}
+.pr-boilerplate h4{
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.pr-boilerplate p{
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+.pr-boilerplate a{
+  text-decoration: none;
+}
+.pr-boilerplate a:hover{
+  text-decoration: underline;
 }

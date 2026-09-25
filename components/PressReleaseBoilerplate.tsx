@@ -18,7 +18,7 @@ export default function PressReleaseBoilerplate() {
       <h4 className="font-bold text-lg text-gray-900 mb-2 pr-boilerplate-heading">
         Connect with Automation Anywhere
       </h4>
-      <p className="mb-6 text-gray-700 pr-boilerplate-text">
+      <p className="mb-6 pr-boilerplate-text">
         Follow us:{' '}
         <a href="#" className="text-orange-500 underline">LinkedIn</a>
         {' | '}
@@ -39,7 +39,7 @@ export default function PressReleaseBoilerplate() {
         <a href="#" className="text-orange-500 underline">Request a demo</a>
       </p>
 
-      <p className="text-sm text-gray-500 pr-boilerplate-legal">
+      <p className="text-sm pr-boilerplate-legal">
         Automation Anywhere is a registered trademark/service mark of Automation Anywhere, Inc.
         in the United States and other countries. Other marks referenced are the property of
         their respective owners.
