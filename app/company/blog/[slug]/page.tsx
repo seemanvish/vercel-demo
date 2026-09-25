@@ -1,5 +1,8 @@
+
 import { client } from '../../../lib/contentful'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import {
+  documentToReactComponents,
+} from '@contentful/rich-text-react-renderer'
 import { BLOCKS } from '@contentful/rich-text-types'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -57,11 +60,6 @@ interface RelatedPostFields {
 }
 
 interface SEOFields {
-  /*
-   * These are the fields currently available
-   * on your SEO Contentful reference according
-   * to the TypeScript error.
-   */
   metaTitle?: string
   metaDescription?: string
 }
@@ -69,9 +67,7 @@ interface SEOFields {
 interface BlogFields {
   title?: string
   slug?: string
-
   description?: any
-
   introContent?: string
 
   category?: {
@@ -94,9 +90,7 @@ interface BlogFields {
   }
 
   featured?: boolean
-
   editorPick?: boolean
-
   publishedDate?: string
 
   relatedPost?: Array<{
@@ -107,7 +101,6 @@ interface BlogFields {
   }>
 
   authorableTitle?: string
-
   authorableURL?: string
 
   seo?: {
@@ -121,6 +114,101 @@ interface BlogFields {
 
 function getFields<T>(fields: unknown): T {
   return fields as T
+}
+
+// =====================================================
+// CREATE HEADING ID
+// =====================================================
+
+function createHeadingId(
+  text: string,
+  index: number
+): string {
+  const slug = text
+    .toLowerCase()
+    .trim()
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, 'and')
+    .replace(/&#39;|&#x27;/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+
+  return slug || `heading-${index + 1}`
+}
+
+// =====================================================
+// GET TABLE OF CONTENTS FROM CONTENTFUL RICH TEXT
+// =====================================================
+
+function getTableOfContents(description: any) {
+  const tableOfContents: {
+    id: string
+    title: string
+  }[] = []
+
+  if (!description?.content) {
+    return tableOfContents
+  }
+
+  const usedIds = new Set<string>()
+
+  description.content.forEach(
+    (node: any, index: number) => {
+
+      /*
+       * Only get H2 / heading-2 nodes
+       */
+      if (node.nodeType !== BLOCKS.HEADING_2) {
+        return
+      }
+
+      /*
+       * Get text from H2
+       */
+      const title =
+        node.content
+          ?.map(
+            (item: any) =>
+              item.value || ''
+          )
+          .join('')
+          .trim() || ''
+
+      if (!title) {
+        return
+      }
+
+      /*
+       * Create unique ID
+       */
+      const baseId = createHeadingId(
+        title,
+        index
+      )
+
+      let id = baseId
+      let counter = 2
+
+      while (usedIds.has(id)) {
+        id = `${baseId}-${counter}`
+        counter++
+      }
+
+      usedIds.add(id)
+
+      /*
+       * Add to Table of Contents
+       */
+      tableOfContents.push({
+        id,
+        title,
+      })
+    }
+  )
+
+  return tableOfContents
 }
 
 // =====================================================
@@ -145,6 +233,7 @@ async function getBlog(slug: string) {
 export async function generateMetadata({
   params,
 }: BlogDetailPageProps): Promise<Metadata> {
+
   const { slug } = await params
 
   const blog = await getBlog(slug)
@@ -155,10 +244,6 @@ export async function generateMetadata({
     }
   }
 
-  /*
-   * Contentful returns a generic fields object.
-   * Convert it explicitly through unknown.
-   */
   const fields = getFields<BlogFields>(
     blog.fields
   )
@@ -189,6 +274,7 @@ export async function generateMetadata({
 export default async function BlogDetailPage({
   params,
 }: BlogDetailPageProps) {
+
   const { slug } = await params
 
   // ===================================================
@@ -201,13 +287,6 @@ export default async function BlogDetailPage({
     notFound()
   }
 
-  /*
-   * IMPORTANT:
-   *
-   * Contentful's SDK types fields generically.
-   *
-   * We intentionally convert through unknown.
-   */
   const fields = getFields<BlogFields>(
     blog.fields
   )
@@ -259,34 +338,65 @@ export default async function BlogDetailPage({
     : null
 
   // ===================================================
+  // TABLE OF CONTENTS
+  // ===================================================
+
+  const tableOfContents =
+    getTableOfContents(
+      fields.description
+    )
+
+  // ===================================================
   // RICH TEXT
   // ===================================================
 
+  /*
+   * Keep a counter so the generated IDs in the
+   * rendered H2s match the IDs in the TOC.
+   */
+  let headingIndex = 0
+
   const richTextOptions = {
     renderNode: {
+
+      // =================================================
+      // H2
+      // =================================================
+
       [BLOCKS.HEADING_2]: (
         node: any,
         children: ReactNode
       ) => {
+
         const text =
           node.content
             ?.map(
               (item: any) =>
                 item.value || ''
             )
-            .join('') || ''
+            .join('')
+            .trim() || ''
 
-        const id = text
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '')
+        const id = createHeadingId(
+          text,
+          headingIndex
+        )
+
+        headingIndex++
 
         return (
-          <h2 id={id}>
+          <h2
+            id={id}
+            className="blog-heading-2"
+          >
             {children}
           </h2>
         )
       },
+
+      // =================================================
+      // H3
+      // =================================================
 
       [BLOCKS.HEADING_3]: (
         _node: any,
@@ -300,6 +410,10 @@ export default async function BlogDetailPage({
       },
     },
   }
+
+  // ===================================================
+  // RENDER
+  // ===================================================
 
   return (
     <main className="page">
@@ -323,8 +437,6 @@ export default async function BlogDetailPage({
             <span>›</span>
 
             <span>Blog</span>
-
-           
 
             <span>›</span>
 
@@ -435,32 +547,50 @@ export default async function BlogDetailPage({
       <section className="article-section">
 
         {/* =================================================
-            SIDEBAR
+            SIDEBAR / TABLE OF CONTENTS
         ================================================= */}
 
         <aside className="article-sidebar">
 
-          <div className="toc-container">
+          {tableOfContents.length > 0 && (
 
-            <h2>
-              In this article
-            </h2>
-            <div className='highlighted-field-content'>
-              <ul>
-                <li className="activesection"><a className="blog-scroll-link" href="#introduction-to-ai-agent-benchmarks">Introduction to AI agent benchmarks</a></li>
-                <li className=""><a className="blog-scroll-link" href="#the-current-landscape-of-ai-agent-benchmarks">The current landscape of AI agent benchmarks</a></li>
-                <li className=""><a className="blog-scroll-link" href="#a-new-evaluation-framework-task-success-vs-trajectory-accuracy">A new evaluation framework: Task success vs. trajectory accuracy</a></li>
-                <li className=""><a className="blog-scroll-link" href="#bench-leaderboard-validating-base-agent-performance">τ-bench leaderboard: Validating base agent performance</a></li>
-                <li className=""><a className="blog-scroll-link" href="#why-public-benchmarks-don-t-tell-the-whole-enterprise-story">Why public benchmarks don't tell the whole enterprise story</a></li>
-                <li className=""><a className="blog-scroll-link" href="#fixing-the-architecture-pre-context-intelligence">Fixing the architecture: PRE &amp; Context Intelligence</a></li>
-                <li className=""><a className="blog-scroll-link" href="#how-to-benchmark-your-own-agentic-systems">How to benchmark your own agentic systems</a></li>
-                <li className=""><a className="blog-scroll-link" href="#conclusion-the-roadmap-to-trustworthy-enterprise-ai">Conclusion: The roadmap to trustworthy enterprise AI</a></li>
-                <li className=""><a className="blog-scroll-link" href="#ai-agent-benchmark-faqs">AI agent benchmark FAQs</a></li>
-            </ul>
-          </div>
-            <nav />
+            <div className="toc-container">
 
-          </div>
+              <h2>
+                In this article
+              </h2>
+
+              <div className="highlighted-field-content">
+
+                <ul>
+
+                  {tableOfContents.map(
+                    (item, index) => (
+
+                      <li
+                        key={item.id}
+                        className="activesection"
+                      >
+
+                        <a
+                          href={`#${item.id}`}
+                          className="blog-scroll-link toc-link"
+                        >
+                          {item.title}
+                        </a>
+
+                      </li>
+
+                    )
+                  )}
+
+                </ul>
+
+              </div>
+
+            </div>
+
+          )}
 
         </aside>
 
@@ -471,6 +601,7 @@ export default async function BlogDetailPage({
         <article className="blog-description">
 
           {fields.description && (
+
             <div className="rich-text">
 
               {documentToReactComponents(
@@ -479,13 +610,16 @@ export default async function BlogDetailPage({
               )}
 
             </div>
+
           )}
+
           {/* =================================================
               TAGS
           ================================================= */}
 
           {fields.tags &&
             fields.tags.length > 0 && (
+
               <div className="tags">
 
                 <span className="tags-title">
@@ -535,6 +669,7 @@ export default async function BlogDetailPage({
           ================================================= */}
 
           {fields.author && (
+
             <section className="author-card">
 
               {authorAvatar && (
@@ -558,16 +693,18 @@ export default async function BlogDetailPage({
                   {authorName}
                 </h3>
 
-               
-
                 {fields.author.fields
                   ?.shortBiography && (
+
                   <p className="author-bio">
+
                     {
                       fields.author.fields
                         .shortBiography
                     }
+
                   </p>
+
                 )}
 
               </div>
@@ -575,14 +712,13 @@ export default async function BlogDetailPage({
             </section>
           )}
 
-          
-
           {/* =================================================
               RELATED POSTS
           ================================================= */}
 
           {fields.relatedPost &&
             fields.relatedPost.length > 0 && (
+
               <section className="related-posts">
 
                 <h2>
@@ -639,12 +775,14 @@ export default async function BlogDetailPage({
 
                             {postFields
                               .introContent && (
+
                               <p>
                                 {
                                   postFields
                                     .introContent
                                 }
                               </p>
+
                             )}
 
                           </div>
