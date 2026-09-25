@@ -55,7 +55,6 @@ export default async function BlogDetailPage({
   console.log('==============================')
   console.log('BLOG REQUEST')
   console.log('Slug:', slug)
-
   // =========================
   // FETCH BLOG FROM CONTENTFUL
   // =========================
