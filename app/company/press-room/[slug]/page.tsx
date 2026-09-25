@@ -56,7 +56,7 @@ export default async function PressReleaseDetail({
   const { title, subtitle, body, releaseDate, location } = entry.fields as any
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12 pr-detail">
+    <div className="max-w-6xl mx-auto px-4 py-12 pr-detail">
       <p className="text-orange-500 text-sm font-bold uppercase mb-2">
         Press Release
         {location?.length > 0 && <span className="text-gray-400 normal-case font-normal"> | {location.join(', ')}</span>}
