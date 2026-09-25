@@ -36,6 +36,16 @@ interface Author {
   fields: {
     name: string
     slug?: string
+    shortBiography: string
+    authorImage?: {
+      fields?: {
+        title?: string
+        description?: string
+        file?: {
+          url: string
+        }
+      }
+    }
   }
 }
 
@@ -199,8 +209,8 @@ export default async function BlogDetailPage({
   // =========================
 
   const authorAvatar =
-    fields.author?.fields?.avatar?.fields?.file?.url
-      ? `https:${fields.author.fields.avatar.fields.file.url}`
+    fields.author?.fields?.authorImage?.fields?.file?.url
+      ? `https:${fields.author.fields.authorImage.fields.file.url}`
       : null
 
   // =========================
@@ -471,20 +481,11 @@ export default async function BlogDetailPage({
                   {fields.author.fields.name}
                 </h3>
 
-                {fields.author.fields.jobTitle && (
-                  <p className="author-job">
-                    {
-                      fields.author.fields
-                        .jobTitle
-                    }
-                  </p>
-                )}
-
-                {fields.author.fields.bio && (
+                {fields.author.fields.shortBiography && (
                   <p className="author-bio">
                     {
                       fields.author.fields
-                        .bio
+                        .shortBiography
                     }
                   </p>
                 )}
