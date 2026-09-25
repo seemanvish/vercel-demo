@@ -14,9 +14,9 @@ interface BlogDetailPageProps {
   }>
 }
 
-// =========================
+// =====================================================
 // CONTENTFUL TYPES
-// =========================
+// =====================================================
 
 interface Category {
   sys: {
@@ -36,7 +36,7 @@ interface Author {
   fields: {
     name: string
     slug?: string
-    shortBiography: string
+    shortBiography?: string
     authorImage?: {
       fields?: {
         title?: string
@@ -59,40 +59,78 @@ interface Tag {
   }
 }
 
-interface TableOfContentsItem {
-  id: string
-  title: string
+interface RelatedPost {
+  sys: {
+    id: string
+  }
+  fields: {
+    title?: string
+    slug?: string
+    introContent?: string
+
+    bannerImage?: {
+      fields?: {
+        file?: {
+          url: string
+        }
+      }
+    }
+  }
+}
+
+interface SEO {
+  sys: {
+    id: string
+  }
+  fields: {
+    metaTitle?: string
+    metaDescription?: string
+  }
 }
 
 interface BlogFields {
   title: string
   slug: string
+
+  description?: any
+
   introContent?: string
+
+  category?: Category
+
+  author?: Author
+
+  tags?: Tag[]
 
   bannerImage?: {
     fields?: {
       title?: string
       description?: string
+
       file?: {
         url: string
       }
     }
   }
 
-  description?: any
+  featured?: boolean
 
-  category?: Category
-  author?: Author
-  tags?: Tag[]
+  editorPick?: boolean
 
   publishedDate?: string
 
-  tableOfContents?: TableOfContentsItem[]
+  relatedPost?: RelatedPost[]
+
+  authorableTitle?: string
+
+  authorableURL?: string
+
+  seo?: SEO
 }
 
-// =========================
-// CONTENTFUL FETCH
-// =========================
+// =====================================================
+// FETCH BLOG
+// =====================================================
 
 async function getBlog(slug: string) {
   const response = await client.getEntries({
@@ -101,24 +139,26 @@ async function getBlog(slug: string) {
     'fields.slug': slug,
 
     /*
-     * Include referenced Contentful entries:
+     * Resolve:
      *
      * Blog
-     * ├── category → Category
-     * ├── author   → Author
-     * └── tags[]   → Tag
+     * ├── Category
+     * ├── Author
+     * ├── Tags
+     * ├── Related Posts
+     * └── SEO
      */
     include: 2,
 
     limit: 1,
   })
 
-  return response.items[0]
+  return response.items[0] || null
 }
 
-// =========================
-// SEO METADATA
-// =========================
+// =====================================================
+// SEO
+// =====================================================
 
 export async function generateMetadata({
   params,
@@ -135,22 +175,45 @@ export async function generateMetadata({
 
   const fields = blog.fields as BlogFields
 
+  const seo = fields.seo?.fields
+
+  const title =
+    seo?.metaTitle ||
+    fields.authorableTitle ||
+    fields.title ||
+    'Blog'
+
+  const description =
+    seo?.metaDescription ||
+    fields.introContent ||
+    ''
+
+  const image =
+    seo?.ogImage?.fields?.file?.url ||
+    fields.bannerImage?.fields?.file?.url
+
   return {
-    title: fields.title || 'Blog',
+    title,
 
-    description:
-      fields.introContent || '',
+    description,
 
+    
     openGraph: {
-      title: fields.title || 'Blog',
+      
 
-      description:
-        fields.introContent || '',
+      type: 'article',
 
-      images: fields.bannerImage?.fields?.file?.url
+      publishedTime:
+        fields.publishedDate,
+
+      authors: fields.author
+        ? [fields.author.fields.name]
+        : undefined,
+
+      images: image
         ? [
             {
-              url: `https:${fields.bannerImage.fields.file.url}`,
+              url: `https:${image}`,
             },
           ]
         : undefined,
@@ -158,64 +221,44 @@ export async function generateMetadata({
   }
 }
 
-// =========================
-// BLOG DETAIL PAGE
-// =========================
+// =====================================================
+// BLOG DETAIL
+// =====================================================
 
 export default async function BlogDetailPage({
   params,
 }: BlogDetailPageProps) {
   const { slug } = await params
 
-  console.log('==============================')
-  console.log('BLOG REQUEST')
-  console.log('Slug:', slug)
-
-  // =========================
-  // FETCH BLOG
-  // =========================
-
   const blog = await getBlog(slug)
 
   if (!blog) {
-    console.log('Blog not found:', slug)
-
     notFound()
   }
 
   const fields = blog.fields as BlogFields
 
-  console.log('Blog found:', {
-    title: fields.title,
-    slug: fields.slug,
-    category: fields.category?.fields?.name,
-    author: fields.author?.fields?.name,
-    tags: fields.tags?.map(
-      (tag) => tag.fields.name
-    ),
-  })
-
-  // =========================
+  // ===================================================
   // HERO IMAGE
-  // =========================
+  // ===================================================
 
-  const heroImageUrl =
+  const heroImage =
     fields.bannerImage?.fields?.file?.url
       ? `https:${fields.bannerImage.fields.file.url}`
       : null
 
-  // =========================
+  // ===================================================
   // AUTHOR AVATAR
-  // =========================
+  // ===================================================
 
   const authorAvatar =
     fields.author?.fields?.authorImage?.fields?.file?.url
       ? `https:${fields.author.fields.authorImage.fields.file.url}`
       : null
 
-  // =========================
-  // DATE
-  // =========================
+  // ===================================================
+  // PUBLISHED DATE
+  // ===================================================
 
   const formattedDate = fields.publishedDate
     ? new Intl.DateTimeFormat('en-US', {
@@ -227,9 +270,9 @@ export default async function BlogDetailPage({
       )
     : null
 
-  // =========================
-  // RICH TEXT OPTIONS
-  // =========================
+  // ===================================================
+  // RICH TEXT
+  // ===================================================
 
   const richTextOptions = {
     renderNode: {
@@ -237,21 +280,12 @@ export default async function BlogDetailPage({
         node: any,
         children: React.ReactNode
       ) => {
-        /*
-         * Generate anchor ID from heading text.
-         *
-         * Example:
-         *
-         * "What is autonomous healthcare?"
-         *
-         * becomes:
-         *
-         * #what-is-autonomous-healthcare
-         */
-
         const text =
           node.content
-            ?.map((item: any) => item.value)
+            ?.map(
+              (item: any) =>
+                item.value
+            )
             .join('') || ''
 
         const id = text
@@ -270,7 +304,11 @@ export default async function BlogDetailPage({
         _node: any,
         children: React.ReactNode
       ) => {
-        return <h3>{children}</h3>
+        return (
+          <h3>
+            {children}
+          </h3>
+        )
       },
     },
   }
@@ -278,9 +316,9 @@ export default async function BlogDetailPage({
   return (
     <main className="page">
 
-      {/* =========================
-          HERO SECTION
-      ========================== */}
+      {/* =================================================
+          HERO
+      ================================================= */}
 
       <section className="hero">
 
@@ -288,9 +326,7 @@ export default async function BlogDetailPage({
 
         <div className="hero-content">
 
-          {/* =========================
-              BREADCRUMBS
-          ========================== */}
+          {/* Breadcrumb */}
 
           <div className="breadcrumbs">
 
@@ -300,23 +336,35 @@ export default async function BlogDetailPage({
 
             <span>Blog</span>
 
+            {fields.category && (
+              <>
+                <span>›</span>
+
+                <span>
+                  {fields.category.fields.name}
+                </span>
+              </>
+            )}
+
             <span>›</span>
 
-            <span>{fields.title}</span>
+            <span>
+              {fields.title}
+            </span>
 
           </div>
 
-          {/* =========================
-              HERO GRID
-          ========================== */}
+          {/* Hero Grid */}
 
           <div className="hero-grid">
 
-            {/* HERO CONTENT */}
+            {/* Hero Copy */}
 
             <div className="hero-copy">
 
-              <h1>{fields.title}</h1>
+              <h1>
+                {fields.title}
+              </h1>
 
               {fields.introContent && (
                 <p className="hero-description">
@@ -324,68 +372,67 @@ export default async function BlogDetailPage({
                 </p>
               )}
 
-              {/* =========================
-                  META
-              ========================== */}
+              {/* Metadata */}
 
               <div className="meta">
 
-                {/* CATEGORY */}
+                {/* Category */}
 
                 {fields.category && (
                   <span className="meta-item">
+
                     <span className="meta-icon">
                       ✦
                     </span>
 
                     {fields.category.fields.name}
+
                   </span>
                 )}
 
-                {/* AUTHOR */}
+                {/* Author */}
 
                 {fields.author && (
                   <span className="meta-item">
+
                     <span className="meta-icon">
                       ●
                     </span>
 
                     {fields.author.fields.name}
+
                   </span>
                 )}
 
-                {/* DATE */}
+                {/* Published Date */}
 
                 {formattedDate && (
                   <span className="meta-item">
+
                     <span className="meta-icon">
                       ▣
                     </span>
 
                     {formattedDate}
+
                   </span>
                 )}
-
-                
 
               </div>
 
             </div>
 
-            {/* =========================
-                HERO IMAGE
-            ========================== */}
+            {/* Hero Image */}
 
-            {heroImageUrl && (
+            {heroImage && (
               <div className="hero-image-wrapper">
 
                 <img
-                  src={heroImageUrl}
+                  src={heroImage}
                   alt={
-                    fields.bannerImage?.fields
+                    fields.bannerImage
+                      ?.fields
                       ?.description ||
-                    fields.bannerImage?.fields
-                      ?.title ||
                     fields.title ||
                     'Blog banner'
                   }
@@ -401,35 +448,35 @@ export default async function BlogDetailPage({
 
       </section>
 
-      {/* =========================
-          ARTICLE SECTION
-      ========================== */}
+      {/* =================================================
+          ARTICLE
+      ================================================= */}
 
       <section className="article-section">
 
-        {/* =========================
+        {/* =================================================
             SIDEBAR
-        ========================== */}
+        ================================================= */}
 
         <aside className="article-sidebar">
 
           <div className="toc-container">
 
-            <h2>In this article</h2>
+            <h2>
+              In this article
+            </h2>
 
             <nav>
 
-              {fields.tableOfContents?.map(
-                (item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    className="toc-link"
-                  >
-                    {item.title}
-                  </a>
-                )
-              )}
+              {/*
+                Since there is no tableOfContents
+                field in your Contentful model,
+                we generate it from H2/H3 headings
+                in Rich Text only if needed.
+
+                For now this can be populated separately
+                if you want a real TOC.
+              */}
 
             </nav>
 
@@ -437,9 +484,9 @@ export default async function BlogDetailPage({
 
         </aside>
 
-        {/* =========================
-            ARTICLE
-        ========================== */}
+        {/* =================================================
+            ARTICLE CONTENT
+        ================================================= */}
 
         <article className="blog-description">
 
@@ -454,9 +501,9 @@ export default async function BlogDetailPage({
             </div>
           )}
 
-          {/* =========================
+          {/* =================================================
               AUTHOR
-          ========================== */}
+          ================================================= */}
 
           {fields.author && (
             <section className="author-card">
@@ -481,6 +528,8 @@ export default async function BlogDetailPage({
                   {fields.author.fields.name}
                 </h3>
 
+                
+
                 {fields.author.fields.shortBiography && (
                   <p className="author-bio">
                     {
@@ -495,9 +544,9 @@ export default async function BlogDetailPage({
             </section>
           )}
 
-          {/* =========================
+          {/* =================================================
               TAGS
-          ========================== */}
+          ================================================= */}
 
           {fields.tags &&
             fields.tags.length > 0 && (
@@ -509,19 +558,96 @@ export default async function BlogDetailPage({
 
                 <div className="tag-list">
 
-                  {fields.tags.map((tag) => (
-                    <a
-                      key={tag.sys.id}
-                      href={`/tags/${tag.fields.slug || tag.sys.id}`}
-                      className="tag"
-                    >
-                      {tag.fields.name}
-                    </a>
-                  ))}
+                  {fields.tags.map(
+                    (tag) => (
+                      <a
+                        key={tag.sys.id}
+                        href={`/tags/${
+                          tag.fields.slug ||
+                          tag.sys.id
+                        }`}
+                        className="tag"
+                      >
+                        {tag.fields.name}
+                      </a>
+                    )
+                  )}
 
                 </div>
 
               </div>
+            )}
+
+          {/* =================================================
+              RELATED POSTS
+          ================================================= */}
+
+          {fields.relatedPost &&
+            fields.relatedPost.length > 0 && (
+              <section className="related-posts">
+
+                <h2>
+                  Related Posts
+                </h2>
+
+                <div className="related-posts-grid">
+
+                  {fields.relatedPost.map(
+                    (post) => {
+
+                      const postImage =
+                        post.fields
+                          .bannerImage
+                          ?.fields
+                          ?.file
+                          ?.url
+
+                      return (
+                        <a
+                          key={post.sys.id}
+                          href={`/blog/${
+                            post.fields.slug
+                          }`}
+                          className="related-post"
+                        >
+
+                          {postImage && (
+                            <img
+                              src={`https:${postImage}`}
+                              alt={
+                                post.fields.title ||
+                                ''
+                              }
+                            />
+                          )}
+
+                          <div>
+                            <h3>
+                              {
+                                post.fields
+                                  .title
+                              }
+                            </h3>
+
+                            {post.fields
+                              .introContent && (
+                              <p>
+                                {
+                                  post.fields
+                                    .introContent
+                                }
+                              </p>
+                            )}
+                          </div>
+
+                        </a>
+                      )
+                    }
+                  )}
+
+                </div>
+
+              </section>
             )}
 
         </article>
