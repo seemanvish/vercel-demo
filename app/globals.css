@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.site-header{
+  background-color: var(--background);
+  position: fixed;
+  left:0;
+  top:0;
+  width:100%;
+  z-index: 99;
+}
+.site-header nav{
+  max-width: 1500px;
+}
+main.page{
+  margin-top:110px;
+}
