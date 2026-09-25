@@ -1,8 +1,8 @@
 
 import { client } from '../../../lib/contentful'
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import DOMPurify from 'isomorphic-dompurify'
 
 import '../blog.css'
 
@@ -14,7 +14,9 @@ interface BlogDetailPageProps {
   }>
 }
 
-// Optional: generate SEO metadata
+// =========================
+// SEO METADATA
+// =========================
 export async function generateMetadata({
   params,
 }: BlogDetailPageProps): Promise<Metadata> {
@@ -42,15 +44,21 @@ export async function generateMetadata({
   }
 }
 
+// =========================
+// BLOG DETAIL PAGE
+// =========================
 export default async function BlogDetailPage({
   params,
 }: BlogDetailPageProps) {
-  // Get slug from URL
   const { slug } = await params
 
-  console.log('Requested slug:', slug)
+  console.log('==============================')
+  console.log('BLOG REQUEST')
+  console.log('Slug:', slug)
 
-  // Fetch blog from Contentful
+  // =========================
+  // FETCH BLOG FROM CONTENTFUL
+  // =========================
   const response = await client.getEntries({
     content_type: 'blog',
     'fields.slug': slug,
@@ -66,39 +74,22 @@ export default async function BlogDetailPage({
     }))
   )
 
-  // Get first matching blog
+  // =========================
+  // GET BLOG
+  // =========================
   const blog = response.items[0]
 
-  // Show Next.js 404 if blog doesn't exist
   if (!blog) {
+    console.log('Blog not found:', slug)
     notFound()
   }
 
   const fields = blog.fields as any
 
-  /*
-   * Contentful Rich Text
-   *
-   * The description field may contain Contentful Rich Text.
-   * Convert the text nodes to HTML.
-   */
-  const htmlContent = fields.description
-
-  const html =
-    htmlContent?.content
-      ?.map((block: any) => {
-        return (
-          block.content
-            ?.map((item: any) => {
-              return item.value || ''
-            })
-            .join('') || ''
-        )
-      })
-      .join('') || ''
-
-  // Sanitize generated HTML before rendering
-  const cleanHtml = DOMPurify.sanitize(html)
+  console.log('Blog found:', {
+    title: fields.title,
+    slug: fields.slug,
+  })
 
   return (
     <main className="page">
@@ -154,13 +145,10 @@ export default async function BlogDetailPage({
       ========================== */}
       <section className="article-section">
         <article className="blog-description">
-          {cleanHtml && (
-            <div
-              className="blog-description"
-              dangerouslySetInnerHTML={{
-                __html: cleanHtml,
-              }}
-            />
+          {fields.description && (
+            <div className="blog-description">
+              {documentToReactComponents(fields.description)}
+            </div>
           )}
         </article>
       </section>
