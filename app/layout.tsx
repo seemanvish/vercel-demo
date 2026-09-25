@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { client } from "./lib/contentful";
 import "./globals.css";
-
+import Footer from '@/components/Footer';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -79,7 +79,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </nav>
         </header>
         <main className="flex-1">{children}</main>
-      </body>
+        
+        <Footer logoUrl={logoUrl} siteName={settings?.siteName} />      </body>
     </html>
   );
 }
