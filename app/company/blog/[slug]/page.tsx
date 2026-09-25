@@ -324,15 +324,7 @@ export default async function BlogDetailPage({
 
             <span>Blog</span>
 
-            {categoryName && (
-              <>
-                <span>›</span>
-
-                <span>
-                  {categoryName}
-                </span>
-              </>
-            )}
+           
 
             <span>›</span>
 
