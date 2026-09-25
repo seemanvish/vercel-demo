@@ -445,12 +445,19 @@ export default async function BlogDetailPage({
             <h2>
               In this article
             </h2>
-
-            {/*
-              We can populate this automatically
-              from H2 headings later.
-            */}
-
+            <div className='highlighted-field-content'>
+              <ul>
+                <li className="activesection"><a className="blog-scroll-link" href="#introduction-to-ai-agent-benchmarks">Introduction to AI agent benchmarks</a></li>
+                <li className=""><a className="blog-scroll-link" href="#the-current-landscape-of-ai-agent-benchmarks">The current landscape of AI agent benchmarks</a></li>
+                <li className=""><a className="blog-scroll-link" href="#a-new-evaluation-framework-task-success-vs-trajectory-accuracy">A new evaluation framework: Task success vs. trajectory accuracy</a></li>
+                <li className=""><a className="blog-scroll-link" href="#bench-leaderboard-validating-base-agent-performance">τ-bench leaderboard: Validating base agent performance</a></li>
+                <li className=""><a className="blog-scroll-link" href="#why-public-benchmarks-don-t-tell-the-whole-enterprise-story">Why public benchmarks don't tell the whole enterprise story</a></li>
+                <li className=""><a className="blog-scroll-link" href="#fixing-the-architecture-pre-context-intelligence">Fixing the architecture: PRE &amp; Context Intelligence</a></li>
+                <li className=""><a className="blog-scroll-link" href="#how-to-benchmark-your-own-agentic-systems">How to benchmark your own agentic systems</a></li>
+                <li className=""><a className="blog-scroll-link" href="#conclusion-the-roadmap-to-trustworthy-enterprise-ai">Conclusion: The roadmap to trustworthy enterprise AI</a></li>
+                <li className=""><a className="blog-scroll-link" href="#ai-agent-benchmark-faqs">AI agent benchmark FAQs</a></li>
+            </ul>
+          </div>
             <nav />
 
           </div>
