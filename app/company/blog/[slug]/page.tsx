@@ -24,14 +24,15 @@ export default async function BlogDetailPage({
     'fields.slug': slug,
     limit: 1,
   })
-
+console.log(response);
   const blog = response.items[0]
 
   if (!blog) {
     notFound()
   }
-
+console.log(blog);
   const fields = blog.fields as any
+  
 const htmlContent = fields.description;
 
         // Extract HTML from Contentful Rich Text text nodes
