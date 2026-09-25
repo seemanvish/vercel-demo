@@ -36,6 +36,9 @@ body {
   max-width: 1500px;
   padding: 10px 30px;
 }
+.site-header nav a:hover{
+  color: #ff5a10;
+}
 main.flex-1{
   margin-top:85px;
 }
