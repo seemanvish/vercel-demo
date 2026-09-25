@@ -1,12 +1,33 @@
+/* =========================================================
+   BLOG LISTING PAGE
+========================================================= */
+
 .blog-page {
   background: #f1f1f1;
   min-height: 100vh;
   padding: 24px 0;
 }
 
-.blog-page-header { width: 100%; max-width: 1200px; margin: 0 auto; padding: 60px 20px 40px; text-align: center; } 
-.blog-page-header h1 { margin: 0 0 12px; font-size: 48px; line-height: 1.2; font-weight: 700; } 
-.blog-page-header p { margin: 0; font-size: 20px; line-height: 1.5; }
+.blog-page-header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px 40px;
+  text-align: center;
+}
+
+.blog-page-header h1 {
+  margin: 0 0 12px;
+  font-size: 48px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.blog-page-header p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.5;
+}
 
 .blog-header {
   padding: 60px 20px 40px;
@@ -31,8 +52,6 @@
   padding: 20px;
 }
 
-
-
 .blog-container {
   width: 100%;
   max-width: 1400px;
@@ -46,18 +65,25 @@
   gap: 24px 16px;
 }
 
-/* Card */
+
+/* =========================================================
+   BLOG CARD
+========================================================= */
 
 .blog-card {
   background: #ffffff;
   border-radius: 10px 10px 0 0;
   overflow: hidden;
   min-height: 255px;
+
   display: flex;
   flex-direction: column;
 }
 
-/* Image */
+
+/* =========================================================
+   BLOG CARD IMAGE
+========================================================= */
 
 .blog-card-image-wrapper {
   position: relative;
@@ -67,6 +93,7 @@
 .blog-card-image {
   width: 100%;
   height: 150px;
+
   object-fit: cover;
   display: block;
 
@@ -79,7 +106,10 @@
   transform: scale(1.02);
 }
 
-/* Author */
+
+/* =========================================================
+   BLOG CARD AUTHOR
+========================================================= */
 
 .blog-author-avatar {
   position: absolute;
@@ -106,7 +136,10 @@
   object-fit: cover;
 }
 
-/* Content */
+
+/* =========================================================
+   BLOG CARD CONTENT
+========================================================= */
 
 .blog-card-content {
   padding: 18px 15px 12px;
@@ -137,7 +170,10 @@
   text-decoration: underline;
 }
 
-/* Metadata */
+
+/* =========================================================
+   BLOG CARD META
+========================================================= */
 
 .blog-card-meta {
   margin-top: auto;
@@ -157,44 +193,18 @@
   opacity: 0.7;
 }
 
-/* Tablet */
 
-@media (max-width: 900px) {
-
-  .blog-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-}
-
-/* Mobile */
-
-@media (max-width: 600px) {
-
-  .blog-container {
-    padding: 0 15px;
-  }
-
-  .blog-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .blog-card-image {
-    height: 180px;
-  }
-
-}
-
-/* =========================
-   HERO
-========================= */
+/* =========================================================
+   BLOG DETAIL HERO
+========================================================= */
 
 .hero {
   position: relative;
+
   width: calc(100% - 120px);
   max-width: 1100px;
   min-height: 225px;
+
   margin: 18px auto 0;
 
   overflow: hidden;
@@ -212,53 +222,89 @@
   color: #ffffff;
 }
 
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
 .hero-content {
   position: relative;
+
   z-index: 2;
+
   padding: 16px 19px 17px;
 }
 
+
+/* =========================================================
+   BREADCRUMBS
+========================================================= */
+
 .breadcrumbs {
   display: flex;
+
   align-items: center;
+
+  flex-wrap: wrap;
+
   gap: 6px;
 
   margin-bottom: 18px;
 
   color: #ffffff;
+
   font-size: 6.5px;
+
   font-weight: 500;
 
-  white-space: nowrap;
+  line-height: 1.3;
 }
 
 .breadcrumbs span:last-child {
   opacity: 0.85;
 }
 
+
+/* =========================================================
+   HERO GRID
+========================================================= */
+
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 270px;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    270px;
+
   align-items: center;
 
   gap: 30px;
 }
 
+
+/* =========================================================
+   HERO COPY
+========================================================= */
+
 .hero-copy {
   position: relative;
+
   z-index: 3;
 }
 
 .hero h1 {
-  margin: 0 0 13px;
-
   max-width: 570px;
+
+  margin: 0 0 13px;
 
   color: #ffffff;
 
   font-size: 21px;
+
   line-height: 1.18;
+
   font-weight: 400;
+
   letter-spacing: -0.4px;
 }
 
@@ -270,13 +316,24 @@
   color: #ffffff;
 
   font-size: 9px;
+
   line-height: 1.45;
+
   font-weight: 400;
 }
 
+
+/* =========================================================
+   HERO META
+========================================================= */
+
 .meta {
   display: flex;
+
   align-items: center;
+
+  flex-wrap: wrap;
+
   gap: 18px;
 
   margin-top: 17px;
@@ -284,26 +341,32 @@
 
 .meta-item {
   display: flex;
+
   align-items: center;
+
   gap: 6px;
 
   color: #ffffff;
 
   font-size: 7px;
+
   white-space: nowrap;
 }
 
 .meta-icon {
   color: #eeeeee;
+
   font-size: 10px;
 }
 
-/* =========================
+
+/* =========================================================
    GOLD DECORATIVE LINES
-========================= */
+========================================================= */
 
 .gold-lines {
   position: absolute;
+
   z-index: 1;
 
   width: 580px;
@@ -342,11 +405,14 @@
       black 70%,
       transparent 100%
     );
+
+  pointer-events: none;
 }
 
-/* =========================
-   IMAGE
-========================= */
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
 
 .hero-image-wrapper {
   position: relative;
@@ -360,13 +426,22 @@
 
   border-radius: 11px;
 
-  background: #555;
+  background: #555555;
 
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
-.hero-image {
+
+/*
+ * Supports both:
+ *
+ * .hero-image
+ * .blog-featured-image
+ */
+
+.hero-image,
+.blog-featured-image {
   width: 100%;
   height: 100%;
 
@@ -375,12 +450,20 @@
   object-fit: cover;
 }
 
+
+/* =========================================================
+   OPTIONAL IMAGE OVERLAY
+========================================================= */
+
 .image-overlay {
   position: absolute;
+
   inset: 0;
 
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
 
   padding-left: 12px;
@@ -396,38 +479,62 @@
   color: white;
 
   font-size: 10px;
+
   line-height: 1.2;
+
   font-weight: 700;
 }
 
-/* =========================
+
+/* =========================================================
    ARTICLE SECTION
-========================= */
+========================================================= */
 
 .article-section {
   display: grid;
-  
+
+  /*
+   * Sidebar + article content
+   */
+  grid-template-columns:
+    155px
+    minmax(0, 1fr);
 
   gap: 28px;
+
+  width: 100%;
 
   max-width: 775px;
 
   margin: 30px auto 0;
 
   padding: 0 20px 60px;
+
+  align-items: start;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+
+/* =========================================================
+   ARTICLE SIDEBAR
+========================================================= */
+
+.article-sidebar {
+  position: relative;
+
+  min-width: 0;
+}
 
 .sidebar {
   position: relative;
 }
 
-.sidebar-inner {
+.sidebar-inner,
+.toc-container {
   position: sticky;
+
   top: 25px;
+
+  overflow: hidden;
 
   padding: 16px;
 
@@ -436,17 +543,94 @@
   background: #eeeeee;
 }
 
+
+/*
+ * Heading used by the new JSX:
+ *
+ * <div className="toc-container">
+ *   <h2>In this article</h2>
+ */
+
+.toc-container h2,
+.sidebar-inner h2,
 .sidebar h3 {
-  margin: 0 0 18px;
+  margin: 0 0 13px;
+
+  color: #171717;
 
   font-size: 11px;
+
+  line-height: 1.3;
+
   font-weight: 500;
 }
+
+
+/* =========================================================
+   TABLE OF CONTENTS
+========================================================= */
+
+.toc-container nav,
+.sidebar-inner nav {
+  padding: 0;
+}
+
+
+/*
+ * New JSX:
+ *
+ * .toc-link
+ *
+ * Existing CSS:
+ *
+ * .toc a
+ */
+
+.toc-link,
+.toc a {
+  display: block;
+
+  margin-bottom: 11px;
+
+  padding: 6px 7px;
+
+  border-radius: 4px;
+
+  color: #202020;
+
+  font-size: 7px;
+
+  line-height: 1.5;
+
+  text-decoration: none;
+
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.toc-link:last-child,
+.toc a:last-child {
+  margin-bottom: 0;
+}
+
+.toc-link:hover,
+.toc a:hover {
+  color: #c48700;
+
+  background: #e2e2e2;
+}
+
+
+/* =========================================================
+   OLD TOC SUPPORT
+========================================================= */
 
 .toc {
   padding: 11px 9px;
 
   border: 1px solid #cfcfcf;
+
   border-radius: 5px;
 
   background: #f2f2f2;
@@ -456,74 +640,388 @@
   margin-bottom: 13px;
 
   font-size: 8px;
+
   font-weight: 700;
 }
 
-.toc a {
-  display: block;
 
-  margin-bottom: 13px;
-
-  color: #202020;
-
-  font-size: 7px;
-  line-height: 1.5;
-
-  text-decoration: none;
-}
-
-.toc a:last-child {
-  margin-bottom: 0;
-}
-
-.toc a:hover {
-  color: #c48700;
-}
-
-/* =========================
+/* =========================================================
    ARTICLE CONTENT
-========================= */
+========================================================= */
 
-.article-content {
-  font-size: 9px;
-  line-height: 1.55;
-  color: #151515;
+.blog-description {
+  min-width: 0;
 }
 
+
+/*
+ * The JSX uses:
+ *
+ * <div className="rich-text">
+ *
+ * The old implementation used:
+ *
+ * .article-content
+ *
+ * Both are supported here.
+ */
+
+.rich-text,
+.article-content {
+  color: #151515;
+
+  font-size: 9px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   ARTICLE PARAGRAPHS
+========================================================= */
+
+.rich-text p,
 .article-content p {
   margin: 0 0 17px;
 }
 
+
+/* =========================================================
+   ARTICLE HEADINGS
+========================================================= */
+
+.rich-text h2,
 .article-content h2 {
+  scroll-margin-top: 30px;
+
   margin: 27px 0 10px;
 
+  color: #151515;
+
   font-size: 18px;
+
   line-height: 1.25;
+
   font-weight: 500;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+.rich-text h2:first-child,
+.article-content h2:first-child {
+  margin-top: 0;
+}
+
+.rich-text h3,
+.article-content h3 {
+  scroll-margin-top: 30px;
+
+  margin: 22px 0 10px;
+
+  color: #171717;
+
+  font-size: 14px;
+
+  line-height: 1.3;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ARTICLE LISTS
+========================================================= */
+
+.rich-text ul,
+.rich-text ol,
+.article-content ul,
+.article-content ol {
+  margin: 10px 0 17px;
+
+  padding-left: 20px;
+
+  color: #151515;
+
+  font-size: 9px;
+
+  line-height: 1.55;
+}
+
+.rich-text li,
+.article-content li {
+  margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   ARTICLE LINKS
+========================================================= */
+
+.rich-text a,
+.article-content a {
+  color: #b47700;
+
+  text-decoration: underline;
+
+  text-underline-offset: 2px;
+}
+
+
+/* =========================================================
+   ARTICLE STRONG
+========================================================= */
+
+.rich-text strong,
+.article-content strong {
+  color: #151515;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ARTICLE BLOCKQUOTE
+========================================================= */
+
+.rich-text blockquote,
+.article-content blockquote {
+  margin: 20px 0;
+
+  padding: 13px 17px;
+
+  border-left: 3px solid #e0a316;
+
+  background: #f7f7f7;
+
+  color: #444444;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   AUTHOR CARD
+========================================================= */
+
+.author-card {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 14px;
+
+  margin-top: 40px;
+
+  padding: 20px 0;
+
+  border-top: 1px solid #e5e5e5;
+
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.author-avatar {
+  flex: 0 0 auto;
+
+  width: 58px;
+  height: 58px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  background: #eeeeee;
+}
+
+.author-content {
+  min-width: 0;
+}
+
+.author-label {
+  margin-bottom: 3px;
+
+  color: #a87708;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.author-content h3 {
+  margin: 0;
+
+  color: #171717;
+
+  font-size: 13px;
+
+  line-height: 1.3;
+
+  font-weight: 600;
+}
+
+.author-job {
+  margin: 3px 0 5px;
+
+  color: #777777;
+
+  font-size: 9px;
+}
+
+.author-bio {
+  margin: 6px 0 0;
+
+  color: #555555;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   TAGS
+========================================================= */
+
+.tags {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.tags-title {
+  color: #222222;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.tag-list {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+.tag {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  background: #f1f1f1;
+
+  color: #555555;
+
+  font-size: 8px;
+
+  line-height: 1;
+
+  text-decoration: none;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.tag:hover {
+  background: #dfa313;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   AUTHOR / TAGS RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .author-card {
+    gap: 11px;
+  }
+
+  .author-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .tags {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+}
+
+
+/* =========================================================
+   BLOG LISTING RESPONSIVE
+========================================================= */
 
 @media (max-width: 900px) {
+
+  .blog-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   DETAIL PAGE - TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
   .hero {
     width: calc(100% - 40px);
   }
 
   .hero-grid {
-    grid-template-columns: 1fr 210px;
+    grid-template-columns:
+      1fr
+      210px;
   }
 
   .article-section {
-    grid-template-columns: 170px minmax(0, 1fr);
+    grid-template-columns:
+      170px
+      minmax(0, 1fr);
+
+    max-width: 900px;
   }
+
 }
 
+
+/* =========================================================
+   DETAIL PAGE - MOBILE
+========================================================= */
+
 @media (max-width: 700px) {
+
   .hero {
     width: calc(100% - 24px);
+
     margin-top: 12px;
+
     min-height: auto;
   }
 
@@ -533,7 +1031,10 @@
 
   .breadcrumbs {
     overflow: hidden;
+
     text-overflow: ellipsis;
+
+    white-space: nowrap;
   }
 
   .hero-grid {
@@ -546,6 +1047,7 @@
 
   .hero-description {
     font-size: 11px;
+
     line-height: 1.55;
   }
 
@@ -558,41 +1060,137 @@
 
   .meta {
     flex-wrap: wrap;
+
     gap: 10px 16px;
   }
 
   .article-section {
     grid-template-columns: 1fr;
 
+    max-width: 775px;
+
     margin-top: 25px;
+
     padding: 0 20px 50px;
   }
 
-  .sidebar-inner {
+  .sidebar-inner,
+  .toc-container {
     position: static;
   }
 
+  .toc-container nav,
+  .sidebar-inner nav {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 2px;
+  }
+
+  .toc-link,
+  .toc a {
+    margin-bottom: 0;
+  }
+
+  .rich-text,
   .article-content {
     font-size: 12px;
+
     line-height: 1.7;
   }
 
+  .rich-text h2,
   .article-content h2 {
     font-size: 22px;
   }
+
+  .rich-text h3,
+  .article-content h3 {
+    font-size: 18px;
+  }
+
 }
 
+
+/* =========================================================
+   MOBILE BLOG LISTING
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .blog-container {
+    padding: 0 15px;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .blog-card-image {
+    height: 180px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
 @media (max-width: 450px) {
+
+  .hero {
+    width: calc(100% - 24px);
+  }
+
   .hero h1 {
     font-size: 22px;
   }
 
   .hero-image-wrapper {
     width: 100%;
+
+    height: 140px;
   }
 
   .article-section {
     padding-left: 15px;
+
     padding-right: 15px;
   }
+
+  .toc-container nav,
+  .sidebar-inner nav {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .hero-content {
+    padding: 13px;
+  }
+
+  .hero h1 {
+    font-size: 20px;
+  }
+
+  .hero-description {
+    font-size: 10px;
+  }
+
+  .meta {
+    gap: 8px 12px;
+  }
+
 }

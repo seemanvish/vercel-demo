@@ -36,17 +36,6 @@ interface Author {
   fields: {
     name: string
     slug?: string
-    jobTitle?: string
-    bio?: string
-    avatar?: {
-      fields?: {
-        title?: string
-        description?: string
-        file?: {
-          url: string
-        }
-      }
-    }
   }
 }
 
@@ -87,7 +76,6 @@ interface BlogFields {
   tags?: Tag[]
 
   publishedDate?: string
-  readTime?: string
 
   tableOfContents?: TableOfContentsItem[]
 }
@@ -378,17 +366,7 @@ export default async function BlogDetailPage({
                   </span>
                 )}
 
-                {/* READ TIME */}
-
-                {fields.readTime && (
-                  <span className="meta-item">
-                    <span className="meta-icon">
-                      ◷
-                    </span>
-
-                    {fields.readTime}
-                  </span>
-                )}
+                
 
               </div>
 
