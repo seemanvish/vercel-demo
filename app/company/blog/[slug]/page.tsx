@@ -1,5 +1,5 @@
 
-import { client } from '../../../lib/contentful'
+import '../blog.css'
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -10,75 +10,54 @@ interface BlogDetailPageProps {
 export default async function BlogDetailPage({
   params,
 }: BlogDetailPageProps) {
-  const { slug } = await params
-
-  let response
-
   try {
-    response = await client.getEntries({
-      content_type: 'blog',
-      limit: 100,
-    })
+    const { slug } = await params
+
+    return (
+      <main className="page">
+        <section className="hero">
+          <div className="gold-lines" />
+
+          <div className="hero-content">
+            <div className="breadcrumbs">
+              <span>Home</span>
+              <span>›</span>
+              <span>Blog</span>
+              <span>›</span>
+              <span>{slug}</span>
+            </div>
+
+            <div className="hero-grid">
+              <div className="hero-copy">
+                <h1>Blog Page Is Working</h1>
+
+                <p className="hero-description">
+                  Slug received from URL:
+                </p>
+
+                <p className="hero-description">
+                  <strong>{slug}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    )
   } catch (error) {
-    console.error('CONTENTFUL ERROR:', error)
+    console.error('PAGE ERROR:', error)
 
     return (
       <main style={{ padding: '40px' }}>
-        <h1>Contentful Error</h1>
-        <pre>
+        <h1>Page Error</h1>
+
+        <pre style={{ whiteSpace: 'pre-wrap' }}>
           {error instanceof Error
-            ? error.message
+            ? error.stack || error.message
             : JSON.stringify(error, null, 2)}
         </pre>
       </main>
     )
   }
-
-  const blogs = response.items as any[]
-
-  const blog = blogs.find(
-    (item) => item.fields?.slug === slug
-  )
-
-  return (
-    <main style={{ padding: '40px' }}>
-      <h1>Contentful Debug</h1>
-
-      <h2>Requested slug</h2>
-      <pre>{slug}</pre>
-
-      <h2>Blogs returned</h2>
-
-      <pre>
-        {JSON.stringify(
-          blogs.map((item) => ({
-            id: item.sys?.id,
-            contentType:
-              item.sys?.contentType?.sys?.id,
-            slug: item.fields?.slug,
-            title: item.fields?.title,
-          })),
-          null,
-          2
-        )}
-      </pre>
-
-      <h2>Matching blog</h2>
-
-      <pre>
-        {JSON.stringify(
-          blog
-            ? {
-                id: blog.sys?.id,
-                slug: blog.fields?.slug,
-                title: blog.fields?.title,
-              }
-            : null,
-          null,
-          2
-        )}
-      </pre>
-    </main>
-  )
 }
 
