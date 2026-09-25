@@ -7,6 +7,7 @@ import { BLOCKS } from '@contentful/rich-text-types'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
+import Link from "next/link";
 
 import '../blog.css'
 
@@ -432,11 +433,11 @@ export default async function BlogDetailPage({
 
           <div className="breadcrumbs">
 
-            <span>Home</span>
+            <span><Link href="/">Home</Link></span>
 
             <span>›</span>
 
-            <span>Blog</span>
+            <span><Link href="/company/blog">Blog</Link></span>
 
             <span>›</span>
 
